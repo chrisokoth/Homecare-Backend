@@ -1,14 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const meet = require("../controllers/meet");
+const gpt = require("../controllers/gpt");
 
-/**
- * @swagger
- * tags:
- *   name: Meet
- *   description: The Meet API for video meetings and token generation
- */
-
-router.route("/get_token").get(meet.getToken);
-
+router.route("/").post(gpt.chatGPT);
 module.exports = router;

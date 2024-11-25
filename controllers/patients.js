@@ -84,35 +84,6 @@ const uploadFile = (file, OCR) => {
   });
 };
 
-
-
-/**
- * @swagger
- * /login:
- *   post:
- *     summary: Login a patient using Google token
- *     description: Logs in the patient and retrieves their information based on Google access token.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               googleAccessToken:
- *                 type: string
- *                 description: Google access token for authentication.
- *               role:
- *                 type: string
- *                 description: The role of the user (patient or doctor).
- *     responses:
- *       200:
- *         description: Patient found, returns user data.
- *       212:
- *         description: New patient, requires registration.
- *       400:
- *         description: Invalid access token or other error.
- */
 // React Login
 module.exports.login = async (req, res) => {
   res.set("Access-Control-Allow-Origin", "*");
@@ -149,65 +120,6 @@ module.exports.login = async (req, res) => {
     });
   // }
 };
-
-/**
- * @swagger
- * /register:
- *   post:
- *     summary: Register a new patient
- *     description: Registers a new patient with provided information.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               data:
- *                 type: object
- *                 properties:
- *                   name:
- *                     type: string
- *                     description: The name of the patient.
- *                   email:
- *                     type: string
- *                     description: The email address of the patient.
- *                   photo:
- *                     type: string
- *                     description: The photo URL of the patient.
- *                   age:
- *                     type: integer
- *                     description: The age of the patient.
- *                   gender:
- *                     type: string
- *                     description: The gender of the patient.
- *                   height:
- *                     type: number
- *                     description: The height of the patient.
- *                   weight:
- *                     type: number
- *                     description: The weight of the patient.
- *                   allergies:
- *                     type: string
- *                     description: The allergies of the patient.
- *                   otherConditions:
- *                     type: string
- *                     description: Other medical conditions of the patient.
- *                   medications:
- *                     type: string
- *                     description: The medications the patient is taking.
- *                   overview:
- *                     type: string
- *                     description: A brief overview of the patient's health.
- *                   token:
- *                     type: string
- *                     description: A token to authenticate the patient.
- *     responses:
- *       200:
- *         description: Registration successful, returns patient data.
- *       400:
- *         description: Something went wrong during registration.
- */
 
 //React Register
 module.exports.register = async (req, res) => {
@@ -266,27 +178,6 @@ module.exports.register = async (req, res) => {
   }
 };
 
-
-/**
- * @swagger
- * /healthHistory:
- *   get:
- *     summary: Get a patient's health history
- *     description: Retrieves a patient's health history, including visits and doctor information.
- *     parameters:
- *       - name: id
- *         in: query
- *         required: true
- *         description: The patient's ID.
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Successfully retrieved health history.
- *       400:
- *         description: No patient id provided.
- */
-
 module.exports.healthHistory = async (req, res) => {
   try {
     if (!req.query.id) {
@@ -302,49 +193,6 @@ module.exports.healthHistory = async (req, res) => {
     res.status(400).json("Something Went Wrong!");
   }
 };
-
-
-/**
- * @swagger
- * /healthHistoryForm:
- *   post:
- *     summary: Add health history information for a patient
- *     description: Allows a doctor to add health history details for a patient, including uploads.
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
- *           schema:
- *             type: object
- *             properties:
- *               id:
- *                 type: string
- *                 description: The patient's ID.
- *               date:
- *                 type: string
- *                 format: date
- *                 description: The date of the visit.
- *               doctorComments:
- *                 type: string
- *                 description: Comments from the doctor.
- *               patientComments:
- *                 type: string
- *                 description: Comments from the patient.
- *               doctorName:
- *                 type: string
- *                 description: The name of the doctor.
- *               files:
- *                 type: array
- *                 items:
- *                   type: string
- *                   format: binary
- *                 description: The files (such as prescriptions or reports) related to the visit.
- *     responses:
- *       200:
- *         description: Health history successfully added.
- *       400:
- *         description: No patient ID provided or missing files.
- */
 
 module.exports.healthHistoryForm = async (req, res) => {
   try {
@@ -380,26 +228,6 @@ module.exports.healthHistoryForm = async (req, res) => {
   }
 };
 
-/**
- * @swagger
- * /prescription:
- *   get:
- *     summary: Get a patient's prescriptions
- *     description: Retrieves all prescriptions related to a patient.
- *     parameters:
- *       - name: id
- *         in: query
- *         required: true
- *         description: The patient's ID.
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Successfully retrieved prescriptions.
- *       400:
- *         description: No patient id provided.
- */
-
 module.exports.prescription = async (req, res) => {
   try {
     if (!req.query.id) {
@@ -413,44 +241,6 @@ module.exports.prescription = async (req, res) => {
     res.status(400).json("Something Went Wrong!");
   }
 };
-
-/**
- * @swagger
- * /prescription-form:
- *   post:
- *     summary: Submit prescription form
- *     description: Add a new prescription for a patient with uploaded files (prescriptions).
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
- *           schema:
- *             type: object
- *             properties:
- *               id:
- *                 type: string
- *                 description: The patient ID
- *               date:
- *                 type: string
- *               medications:
- *                 type: string
- *               prescriptionComments:
- *                 type: string
- *               files:
- *                 type: array
- *                 items:
- *                   type: string
- *                   format: binary
- *     responses:
- *       200:
- *         description: Prescription successfully added
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Prescription'
- *       400:
- *         description: Missing patient ID or files
- */
 
 module.exports.prescriptionForm = async (req, res) => {
   try {
@@ -500,30 +290,6 @@ module.exports.prescriptionForm = async (req, res) => {
   }
 };
 
-/**
- * @swagger
- * /test:
- *   get:
- *     summary: Retrieve test results for a patient
- *     description: Fetch tests for a specific patient by their ID.
- *     parameters:
- *       - in: query
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: The patient ID
- *     responses:
- *       200:
- *         description: Test results retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Patient'
- *       400:
- *         description: Missing patient ID
- */
-
 module.exports.test = async (req, res) => {
   try {
     if (!req.query.id) {
@@ -537,45 +303,6 @@ module.exports.test = async (req, res) => {
     res.status(400).json("Something Went Wrong!");
   }
 };
-
-
-/**
- * @swagger
- * /test-form:
- *   post:
- *     summary: Submit test form
- *     description: Add a new test for a patient with uploaded files (test results).
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
- *           schema:
- *             type: object
- *             properties:
- *               id:
- *                 type: string
- *                 description: The patient ID
- *               date:
- *                 type: string
- *               testName:
- *                 type: string
- *               testComments:
- *                 type: string
- *               files:
- *                 type: array
- *                 items:
- *                   type: string
- *                   format: binary
- *     responses:
- *       200:
- *         description: Test successfully added
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Test'
- *       400:
- *         description: Missing patient ID or files
- */
 
 module.exports.testForm = async (req, res) => {
   try {
@@ -616,35 +343,6 @@ module.exports.testForm = async (req, res) => {
   }
 };
 
-/**
- * @swagger
- * /visits:
- *   get:
- *     summary: Retrieve a patient's visit details
- *     description: Fetch visit information for a specific patient by their ID.
- *     parameters:
- *       - in: query
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: The patient ID for retrieving their visit details
- *     responses:
- *       200:
- *         description: Successfully retrieved visit details
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Visit'
- *       400:
- *         description: Bad request or visit not found
- *         content:
- *           application/json:
- *             schema:
- *               type: string
- *               example: "Something Went Wrong!"
- */
-
 module.exports.visits = async (req, res) => {
   try {
     const { id } = req.query;
@@ -655,40 +353,6 @@ module.exports.visits = async (req, res) => {
     res.status(400).json("Something Went Wrong!");
   }
 };
-
-
-/**
- * @swagger
- * /request-doctor:
- *   post:
- *     summary: Request a doctor for a consultation
- *     description: Submit a doctor request for a patient and check if the doctor exists, and whether the patient has already requested them.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               id:
- *                 type: string
- *               doctorEmail:
- *                 type: string
- *     responses:
- *       212:
- *         description: Request already exists or doctor not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                 status:
- *                   type: integer
- *       400:
- *         description: Missing patient ID or doctor email
- */
 
 module.exports.requestDoctor = async (req, res) => {
   try {
